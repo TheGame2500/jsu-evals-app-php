@@ -124,4 +124,28 @@ class Login
         // default return
         return false;
     }
+
+    public function showTable()
+    {
+        $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
+            // if no connection errors (= working database connection)
+            if (!$this->db_connection->connect_errno) {
+
+                $sql = "SELECT user_id FROM users";
+                $result = $this->db_connection->query($sql);
+                if ($result->num_rows > 0) 
+                {
+            // output data of each row
+                while($row = $result->fetch_assoc()) {
+                    echo "<br> id: ". $row["user_id"]. "<br>";
+                }
+                } else {
+            echo "0 results";
+            }
+
+
+
+    }
+}
 }
