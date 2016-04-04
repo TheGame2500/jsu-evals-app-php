@@ -137,9 +137,26 @@ class Login
 
             if ($result->num_rows > 0)
             {
-                while($row = $result->fetch_assoc()) 
+                $row = $result->fetch_assoc();
+                echo "<br> status: ". $row["status"]. "<br>";
+
+                if ($row["progress"] == 0)
                 {
-                    echo "<br> status: ". $row["status"]. "<br>";
+                    $sql = "UPDATE evals SET progress = 1 WHERE progress = 0 LIMIT 1";
+                } 
+                elseif ($row["progress"] == 1)  
+                {
+                    $sql = "UPDATE evals SET progress = 2 WHERE progress = 1 LIMIT 1";
+                }
+
+
+                if ($this->db_connection->query($sql) === TRUE) 
+                {
+                    echo "New record created successfully";
+                } 
+                else 
+                {
+                    echo "Error: " . $sql . "<br>" . $this->db_connection->error;
                 }
             } 
             else 

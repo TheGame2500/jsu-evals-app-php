@@ -11,8 +11,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql = "INSERT INTO evals (progress, status)
-VALUES ('2', 'sunt 3')";
+$sql = "INSERT INTO evals (progress, status) VALUES ('2', 'sunt 3')";
 
 if ($conn->query($sql) === TRUE) {
     echo "New record created successfully";
