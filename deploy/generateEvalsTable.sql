@@ -28,7 +28,6 @@ FROM
 				ORDER BY post_id DESC)) columns into @sql;
 
 SET @sql = CONCAT('CREATE TABLE EVALS_TABLE( id int,', REPLACE(@sql,',',' varchar(255),'),' varchar(255))');
-select @sql;
 PREPARE smtp from @sql;
 EXECUTE smtp;
 DEALLOCATE PREPARE smtp;
