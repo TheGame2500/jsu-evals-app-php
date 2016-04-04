@@ -161,7 +161,7 @@ class Login
             } 
             else 
             {
-                echo "0 results";
+                echo "Nu mai sunt aplicatii YEY :D";
             }
 
         }
