@@ -37,6 +37,8 @@ class Login
         elseif (isset($_POST["login"])) {
             $this->dologinWithPostData();
         }
+
+        $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     }
 
     /**
@@ -125,27 +127,31 @@ class Login
         return false;
     }
 
-    public function showTable()
+    public function generateData()
     {
-        $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        
+        if (!$this->db_connection->connect_errno)
+        {
+            $sql = "SELECT * FROM evals WHERE progress!=2 ORDER BY RAND() LIMIT 1";
+            $result = $this->db_connection->query($sql);
 
-            // if no connection errors (= working database connection)
-            if (!$this->db_connection->connect_errno) {
-
-                $sql = "SELECT user_id FROM users";
-                $result = $this->db_connection->query($sql);
-                if ($result->num_rows > 0) 
+            if ($result->num_rows > 0)
+            {
+                while($row = $result->fetch_assoc()) 
                 {
-            // output data of each row
-                while($row = $result->fetch_assoc()) {
-                    echo "<br> id: ". $row["user_id"]. "<br>";
+                    echo "<br> status: ". $row["status"]. "<br>";
                 }
-                } else {
-            echo "0 results";
+            } 
+            else 
+            {
+                echo "0 results";
             }
 
-
+        }
 
     }
-}
+
+
+
+
 }
