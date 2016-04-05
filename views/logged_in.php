@@ -10,7 +10,8 @@ Try to close this browser tab and open it again. Still logged in! ;)
 <?php 
 if(isset($_POST['go']))
 {
-	$login->generateData();
+	$evaluation->randomGenerator();
+	
 }
 
 

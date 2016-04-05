@@ -127,48 +127,6 @@ class Login
         return false;
     }
 
-    public function generateData()
-    {
-        
-        if (!$this->db_connection->connect_errno)
-        {
-            $sql = "SELECT * FROM evals WHERE progress!=2 ORDER BY RAND() LIMIT 1";
-            $result = $this->db_connection->query($sql);
-
-            if ($result->num_rows > 0)
-            {
-                $row = $result->fetch_assoc();
-                echo "<br> status: ". $row["status"]. "<br>";
-
-                if ($row["progress"] == 0)
-                {
-                    $sql = "UPDATE evals SET progress = 1 WHERE progress = 0 LIMIT 1";
-                } 
-                elseif ($row["progress"] == 1)  
-                {
-                    $sql = "UPDATE evals SET progress = 2 WHERE progress = 1 LIMIT 1";
-                }
-
-
-                if ($this->db_connection->query($sql) === TRUE) 
-                {
-                    echo "New record created successfully";
-                } 
-                else 
-                {
-                    echo "Error: " . $sql . "<br>" . $this->db_connection->error;
-                }
-            } 
-            else 
-            {
-                echo "Nu mai sunt aplicatii YEY :D";
-            }
-
-        }
-
-    }
-
-
 
 
 }
