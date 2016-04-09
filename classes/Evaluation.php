@@ -60,14 +60,14 @@ class Evaluation
 
     public function formGenerator($a)
     {
-        echo "<form action='demo_form.asp'>";
+        echo "<form action='#'>";
         echo "<br> Nume: ". $a["nume"]. " Prenume: ". $a["prenume"]. "<br>";
         echo "<br> question1: ". $a["question1"]. "<br>";
-        echo "Nota 1: <input type='text' class=''></input><br>";
+        echo "Nota formular: <input id='nota-formular' type='text' class=''></input><br>";
         echo "<br> question2: ". $a["question2"]. "<br>";
-        echo "Nota 2: <input type='text' class=''></input><br>";
+        echo "Nota recomandare: <input id='nota-recomandare' type='text' class=''></input><br>";
         echo "<br> question3: ". $a["question3"]. "<br>";
-        echo "Nota 3: <input type='text' class=''></input><br>";
+        echo "Nota Voluntariat: <input id='nota-voluntariat' type='text' class=''></input><br>";
         echo "<input type='submit' value='Submit'>";
         echo "</form>";
 
@@ -94,4 +94,12 @@ class Evaluation
             echo "Error: " . $sql . "<br>" . $this->db_connection->error;
         }
     }
+
+	/**
+		Input: object containing the 3 required marks
+		Output: Echo success/not success message
+	**/
+	public function submitMarks (marks){
+		var_dump(marks);
+	}
 }

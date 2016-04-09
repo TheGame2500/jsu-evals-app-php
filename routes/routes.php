@@ -5,11 +5,23 @@
 	require_once("../classes/Evaluation.php");
 	$evaluation = new Evaluation();
 
-	switch($_GET["command"]){
-		case "generateEval":
-			$evaluation->randomGenerator();
-			break;
-		default:
-			echo "Not a thang bruh!";
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	    switch($_POST["command"]{
+			case "submitMarks":
+				$evaluation->submitMarks($_POST["marks"]);
+				break;
+			default:
+				echo "Not a thang bruh";
+		}
+	} else if($_SERVER['REQUEST_METHOD'] === 'GET'){
+		switch($_GET["command"]){
+			case "generateEval":
+				$evaluation->randomGenerator();
+				break;
+			default:
+				echo "Not a thang bruh!";
+		}
+	} else {
+		echo "Not a thang bruh!";
 	}
 ?>
