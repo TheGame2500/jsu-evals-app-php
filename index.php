@@ -5,7 +5,7 @@
 		<script src="includes/js/jquery.min.js" type="text/javascript"></script>
 		<script src="includes/js/bootstrap.min.js" type="text/javascript"></script>
 	</head>
-	<body>
+	<body class="container">
 	<?php
 		ini_set('display_errors', 1);
 		error_reporting(E_ALL);
