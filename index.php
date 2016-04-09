@@ -1,7 +1,3 @@
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="./libraries/xajax_js/xajax_core.js"></script>
-</head>
 <?php
 
 /**
@@ -25,8 +21,6 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
 }
 
 // include the configs / constants for the database connection
-include './libraries/xajax_core/xajax.inc.php';
-
 require_once("config/db.php");
 
 // load the login class

@@ -29,6 +29,13 @@ class Evaluation
         $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     }
 
+    public function texter()
+    {
+        // delete the session of the user
+        echo "VACO";
+
+    }
+
     public function randomGenerator()
     {
         if (!$this->db_connection->connect_errno)
@@ -53,7 +60,7 @@ class Evaluation
 
     public function formGenerator($a)
     {
-        echo "<form method='post' action='#' onsubmit='return false;' >";
+        echo "<form action='demo_form.asp'>";
         echo "<br> Nume: ". $a["nume"]. " Prenume: ". $a["prenume"]. "<br>";
         echo "<br> question1: ". $a["question1"]. "<br>";
         echo "Nota 1: <input type='text' class=''></input><br>";
@@ -61,10 +68,8 @@ class Evaluation
         echo "Nota 2: <input type='text' class=''></input><br>";
         echo "<br> question3: ". $a["question3"]. "<br>";
         echo "Nota 3: <input type='text' class=''></input><br>";
-        echo "<input type='button' onclick='xajax_tester();' value='Submit'>";
-        echo "<p id='answer'></p>";
+        echo "<input type='submit' value='Submit'>";
         echo "</form>";
-
 
     }
 
@@ -88,10 +93,5 @@ class Evaluation
         {
             echo "Error: " . $sql . "<br>" . $this->db_connection->error;
         }
-    }
-
-    public function tester()
-    {
-        echo "VACO";
     }
 }
