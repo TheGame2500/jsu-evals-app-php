@@ -6,7 +6,7 @@
 	$evaluation = new Evaluation();
 
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	    switch($_POST["command"]{
+	    switch($_POST["command"]){
 			case "submitMarks":
 				$evaluation->submitMarks($_POST["marks"]);
 				break;

@@ -13,7 +13,7 @@ Try to close this browser tab and open it again. Still logged in! ;)
 <script type="text/javascript">
 	//Event binders
 	$("#generate").click(getNewEvalForm);
-	$("#form").submit(submitMarks);
+	$("#eval-form").submit(submitMarks);
 	
 	//Config
 	var routesURL = "routes/routes.php";
@@ -27,7 +27,9 @@ Try to close this browser tab and open it again. Still logged in! ;)
 
 	}
 
-	function submitMarks() {
+	function submitMarks(event) {
+		event.preventDefault();
+		console.log('muie');
 		$.post({
 				url : routesURL,
 				data : {

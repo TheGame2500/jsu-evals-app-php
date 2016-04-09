@@ -99,7 +99,7 @@ class Evaluation
 		Input: object containing the 3 required marks
 		Output: Echo success/not success message
 	**/
-	public function submitMarks (marks){
-		var_dump(marks);
+	public function submitMarks ($marks){
+		var_dump($marks);
 	}
 }
