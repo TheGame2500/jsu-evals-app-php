@@ -15,16 +15,24 @@ if (isset($login)) {
 ?>
 
 <!-- login form box -->
-<form method="post" action="index.php" name="loginform">
+<form class="form-inline jumbotron row" method="post" action="index.php" name="loginform">
 
-    <label for="login_input_username">Username</label>
-    <input id="login_input_username" class="login_input" type="text" name="user_name" required />
+	<div class="center-block">
+		<div class="form-group">
+			<label for="login_input_username">Username</label>
+			<input id="login_input_username" class="form-control" type="text" name="user_name" required />
+		</div>
 
-    <label for="login_input_password">Password</label>
-    <input id="login_input_password" class="login_input" type="password" name="user_password" autocomplete="off" required />
+		<div class="form-group">
+			<label for="login_input_password">Password</label>
+			<input id="login_input_password" class="form-control" type="password" name="user_password" autocomplete="off" required />
+		</div>
 
-    <input type="submit"  name="login" value="Log in" />
+		<button type="submit" name="login" class="btn btn-success">Log in</button> 
+	</div>
 
 </form>
 
-<a href="register.php">Register new account</a>
+<div align=center>
+	<a href="register.php" class="btn btn-warning">Register new account</a>
+</div>
