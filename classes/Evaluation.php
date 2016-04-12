@@ -29,13 +29,6 @@ class Evaluation
         $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     }
 
-    public function texter()
-    {
-        // delete the session of the user
-        echo "VACO";
-
-    }
-
     public function randomGenerator()
     {
 		$user_id = $_SESSION['user_id'];
@@ -72,39 +65,37 @@ class Evaluation
 
     public function formGenerator($a)
     {
-        echo "<form action='#'>";
-        echo "<br> Nume: ". $a["nume"]. " Prenume: ". $a["prenume"]. "<br>";
-        echo "<br> question1: ". $a["question1"]. "<br>";
-        echo "Nota formular: <input id='nota-formular' type='text' class=''></input><br>";
-        echo "<br> question2: ". $a["question2"]. "<br>";
-        echo "Nota recomandare: <input id='nota-recomandare' type='text' class=''></input><br>";
-        echo "<br> question3: ". $a["question3"]. "<br>";
-        echo "Nota Voluntariat: <input id='nota-voluntariat' type='text' class=''></input><br>";
-        echo "<input type='submit' value='Submit'>";
+        echo "<form class='form jumbotron' action='#'>";
+        echo "<span> Nume: ". $a["nume"]. " Prenume: ". $a["prenume"]. "</span><br>";
+        echo "<span> question1: ". $a["question1"]. "</span><br>";
+        echo "<label for='nota-formular'>
+				Nota formular:
+			  </label> 
+			  <input id='nota-formular' name='nota-formular' type='text' class='form-control'></input><br>";
+        echo "<span> question2: ". $a["question2"]. "<br>";
+        echo "<label for='nota-recomandare'> 
+				Nota recomandare: 
+			  </label> 
+			  <input id='nota-recomandare' name='nota-recomandare' type='text' class='form-control'></input><br>";
+        echo "<span> question3: ". $a["question3"]. "</span><br>";
+        echo "<label for='nota-voluntariat'
+				Nota Voluntariat: 
+			  <label>
+			  <input id='nota-voluntariat' name='nota-voluntariat' type='text' class='form-control'></input><br>";
+        echo "<button class='btn btn-success' type='submit'>Submit</button>";
         echo "</form>";
-
     }
 
     public function updateProgress($a)
     {
 		$id = $a['id'];
-        if ($a["progress"] == 0)
-        {
-            $sql = "UPDATE evals SET progress = 1 WHERE id = $id AND progress = 0 LIMIT 1";
-        } 
-        elseif ($a["progress"] == 1)  
-        {
-            $sql = "UPDATE evals SET progress = 2 WHERE id = $id AND progress = 1 LIMIT 1";
-        }
+		$sql = "UPDATE evals SET progress = progress + 1 WHERE id = $id  LIMIT 1";
 
-
-        if ($this->db_connection->query($sql) === TRUE) 
+        if (!$this->db_connection->query($sql)) 
         {
-            echo "New record created successfully";
-        } 
-        else 
-        {
-            echo "Error: " . $sql . "<br>" . $this->db_connection->error;
+            $response['success']=false;
+			$response['message']="'Error: " . $sql . "<br>" . $this->db_connection->error . ". <br> contacteaza-i pe Bira si Rares.'";
+            echo json_encode($response);
         }
     }
 
@@ -114,7 +105,9 @@ class Evaluation
 	**/
 	public function submitMarks ($marks){
 		if(!$this->validMarks($marks)){
-			echo 'Note invalide, doar numere reale pozitive intre 1 si 10 sunt permise';
+			$response['success']=false;
+			$response['message']="Note invalide, doar numere reale pozitive intre 1 si 10 sunt permise";
+			echo json_encode($response);
 			return;
 		}
 		$notaFormular = mysqli_real_escape_string($this->db_connection,$marks['notaFormular']);
@@ -129,11 +122,15 @@ class Evaluation
 		
         if ($this->db_connection->query($sql) === TRUE) 
         {
-            echo "New record created successfully";
+			$response['success']=true;
+			$response['message']='Evaluare completata cu success';
+            echo json_encode($response); 
         } 
         else 
         {
-            echo "Error: " . $sql . "<br>" . $this->db_connection->error;
+			$response['success']=false;
+			$response['message']="'Error: " . $sql . "<br>" . $this->db_connection->error . ". <br> contacteaza-i pe Bira si Rares.'";
+            echo json_encode($response); 
         }
 
 	}

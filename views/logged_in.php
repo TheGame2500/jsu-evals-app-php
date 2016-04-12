@@ -1,14 +1,20 @@
 <!-- if you need user information, just put them into the $_SESSION variable and output them here -->
-Hey, <?php echo $_SESSION['user_name']; ?>. You are logged in.
-Try to close this browser tab and open it again. Still logged in! ;)
-<div class="row">
-	<div id="notifications" class="center-block bg-success"></div>
+<div class="row bg-primary" style="margin: 10px 0px;padding:10px">
+	<h3 style="margin:0"> Salut, <?php echo $_SESSION['user_name']; ?>! </h3>
+	Instructiuni:
+	<ul>
+		<li>Apasa pe "Da-mi un formular" pentru a evalua un formular.</li>
+		<li>Daca nu mai sunt formulare, petrece.</li>
+		<li>Spor!</li>
+	</ul>
+</div>
+<div id="notifications" class="row" style="margin: 10px 0px;padding:10px; margin-top:0px">
 </div>
 <div id="eval-form">
 </div>
-	<button id="generate" class="btn btn-default">Generate</button>
+	<button id="generate" class="btn btn-success">Da-mi un formular</button>
 <!-- because people were asking: "index.php?logout" is just my simplified form of "index.php?logout=true" -->
-<a href="index.php?logout">Logout</a>
+<a class="btn btn-danger" href="index.php?logout">Logout</a>
 
 <script type="text/javascript">
 	//Event binders
@@ -22,14 +28,13 @@ Try to close this browser tab and open it again. Still logged in! ;)
 	function getNewEvalForm() {
 		$.get(routesURL, {command : "generateEval"},
 			function(data){
+				$("#generate").hide();
 				$("#eval-form").html(data);
 			});
-
 	}
 
 	function submitMarks(event) {
 		event.preventDefault();
-		console.log('muie');
 		$.post({
 				url : routesURL,
 				data : {
@@ -41,9 +46,18 @@ Try to close this browser tab and open it again. Still logged in! ;)
 							}
 						},
 				success : function(data){
-						$("#notifications").text(data);
+						var response = JSON.parse(data);
+						if(response.success){
+							$('#eval-form').empty();
+							$("#generate").show();
+							$("#notifications").removeClass('bg-danger').addClass('bg-success');
+						}
+						else{
+							$("#notifications").removeClass('bg-success').addClass('bg-danger');
+						}
+						$("#notifications").text(response.message);
 					}
 				})
-	}
+		}
 </script>
 
