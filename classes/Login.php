@@ -107,6 +107,12 @@ class Login
      */
     public function doLogout()
     {
+		// rollback eval if present
+		require_once('Evaluation.php');
+		$evaluation = new Evaluation();
+		if($_SESSION['form_id']!==null){
+			$evaluation->rollbackProgress($_SESSION['form_id']);
+		}
         // delete the session of the user
         $_SESSION = array();
         session_destroy();

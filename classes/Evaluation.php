@@ -89,7 +89,7 @@ class Evaluation
     public function updateProgress($a)
     {
 		$id = $a['id'];
-		$sql = "UPDATE evals SET progress = progress + 1 WHERE id = $id  LIMIT 1";
+		$sql = "UPDATE evals SET progress = progress + 1 WHERE id = $id";
 
         if (!$this->db_connection->query($sql)) 
         {
@@ -119,7 +119,9 @@ class Evaluation
 		$user_name = mysqli_real_escape_string($this->db_connection,$_SESSION['user_name']);
 		$sql = "INSERT INTO marks(nota_formular,nota_recomandare,nota_voluntariat,form_id,medie,user_id,user_name)
 				VALUES($notaFormular,$notaRecomandare,$notaVoluntariat,$form_id,$medie,$user_id,'$user_name');";
-		
+		//clear it out of session, for purposes of rolling the progress back if user logs out without completing eval
+
+		$_SESSION['form_id'] = null;	
         if ($this->db_connection->query($sql) === TRUE) 
         {
 			$response['success']=true;
@@ -143,5 +145,10 @@ class Evaluation
 				$valid = false;
 		}
 		return $valid;
+	}
+
+	public function rollbackProgress($form_id){
+		$sql = "UPDATE evals SET progress = progress - 1 WHERE id = $form_id";
+		$this->db_connection->query($sql);
 	}
 }
