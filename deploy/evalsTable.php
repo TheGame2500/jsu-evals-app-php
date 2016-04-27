@@ -14,6 +14,7 @@ class evals{
     
     public function __construct($form_id){
         require_once('../config/db.php');
+        $this->blackListColumns = [39,44,49,53,57,30,27,64,40]; //weird label columns we don't actually need
         $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME); 
         $this->db_connection->set_charset('utf8');
         $this->form_id = $form_id; 
@@ -46,6 +47,13 @@ class evals{
            if($column['label'] !== "") 
                array_push($this->columnsArray,$column);
         }
+
+        //remove blacklisted columns
+        forEach($this->columnsArray as $key => $column){
+            if(in_array($column['id'],$this->blackListColumns)){
+                unset($this->columnsArray[$key]);
+            }
+        }
     }
 
     private function createTableFromColumns(){
@@ -71,6 +79,37 @@ class evals{
             if(strCmp($column['label'],$columnLabel) == 0) $same = true;
         }
         return $same;
+    }
+
+    private function populateTable(){
+        $allPosts = $this -> getAllPosts() -> fetch_all();
+        forEach($allPosts as $key1 => $post){
+            $row = [$post];
+            forEach($allPosts as $key2 => $otherPost){
+                if($post[1]==$otherPost[1] && $post[2]!==$otherPost[2]){
+                    array_push($row,$otherPost);
+                    unset($allPosts[$key2]);
+                }
+            }
+            unset($allPosts[$key1]);
+            if(count($row) !== 1)
+                d($row);
+        }
+        die();
+    }
+
+    private function getAllPosts(){
+        $formID = $this -> form_id; 
+        $columns = "";
+        
+        forEach($this -> columnsArray as $column){
+            $columns.="'_field_".$column['id']."',";
+        }
+        $columns = rtrim($columns, ',');
+
+        $sql = "select * from d5a_postmeta where meta_key in($columns) and post_id in(select post_id from
+                d5a_postmeta where meta_key = '_form_id' and meta_value=$formID)";
+        return $this -> db_connection -> query($sql);
     }
 }
 
