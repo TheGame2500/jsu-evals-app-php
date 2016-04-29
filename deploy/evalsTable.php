@@ -1,27 +1,45 @@
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-</head>
-<body>
 <?php
+//this acts as an API to the fucked up Ninja Forms bullshit DB..
+//initialise by giving it the form id
+//if you don't know the form id you need, you probably should not use this (you can usually find out from the UI of the WP admin panel
+//
+//It can generate a table with all the data submitted in the specific form, with decent column names (not that readable though)
+//It can also sort through the bullshit duplicated submissions or submissions with duplicated fields...
+//
+//Death to Ninja Forms, Death to Word Press.. Long live independent programmers not needing that fucking BS WP
+//
+//Like seriously why would you build something that isolated... It's like the Smaug of internet.. No one can communicate with it efficiently to 
+//build some custom code.. And that is why this bullshit, ugly, fat, shameless class is in existence..
+//
+//If you have to use this.. ever.. please start NOT using WP...
+//
+//Build in Anno Domini 2016.. Some fucking year, eh? I honestly hope no one ever reads this..
+
+//Btw if you need to create another table instead of 'evals' just change 'login.evals' into whatever is appropiate for you..
+//
+//Use this and then happy coding whatever app you're coding!
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-require('./kint-master/Kint.class.php');
-class evals{
+class EvalsAPI{
     var $form_id;
     var $columnsArray=[];
     var $db_connection;
     
     public function __construct($form_id){
         require_once('../config/db.php');
-        $this->blackListColumns = [39,44,49,53,57,30,27,64,40]; //weird label columns we don't actually need
+        $this->blackListColumns = [39,44,49,53,57,30,27,64,40]; //weird label columns we don't actually need, you should check them out by looking into the ninja_form_fields or something like that and see what columns are not actually columns, but labels, descriptions and whatever the fuck the Ninja Forms developers thought it would be smart to put into their DB.. And they didn't even write an API to interact with it outsite of Wordpress..
         $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME); 
         $this->db_connection->set_charset('utf8');
         $this->form_id = $form_id; 
-        $this->generateEvalTable();
     } 
+
+    public function getPrettyColumns(){
+        $this -> getColumns();
+        return $this -> columnsArray;
+    }
     
-    private function generateEvalTable(){
+    public function generateEvalTable(){
         $this->createTable();
         $this->populateTable();
     }
@@ -43,6 +61,7 @@ class evals{
            if($this->checkDuplicateColumn($column['label'])) $column['label'].='_parinte';
            //creating the columns in db with decent name lengths
            $column['name'] = substr($column['label'],0,20);
+           $column['prettyName'] = str_replace('_',' ', $column['label']); //God forbid this line of code, I'm on a deadline..
            $column['id'] = $fieldID;
            if($column['label'] !== "") 
                array_push($this->columnsArray,$column);
@@ -92,7 +111,7 @@ class evals{
                 }
             }
             unset($allPosts[$key1]);
-            if(count($row) !== 1)
+            if(count($row) !== 1 && count($row) !== 2)
                 $this -> insertRow($row);
         }
     }
@@ -137,7 +156,4 @@ class evals{
         return $this -> db_connection -> query($sql);
     }
 }
-
-$test = new evals(6);
 ?>
-</body>

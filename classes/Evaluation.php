@@ -4,6 +4,7 @@
  * Class Evaluation
  * handles the user's evaluation input
  */
+require('../deploy/kint-master/Kint.class.php');
 class Evaluation
 {
     /**
@@ -19,6 +20,8 @@ class Evaluation
      */
     public $messages = array();
 
+    private $columns = array();
+
     /**
      * the function "__construct()" automatically starts whenever an object of this class is created,
      * you know, when you do "$login = new Login();"
@@ -27,6 +30,9 @@ class Evaluation
     {
         session_start();
         $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        require_once('../deploy/evalsTable.php');
+        $evalsAPI = new EvalsAPI(6);
+        $this->columns = $evalsAPI -> getPrettyColumns(); 
     }
 
     public function randomGenerator()
@@ -64,27 +70,33 @@ class Evaluation
     }
 
     //THIS IS NOT A FORM GENERATOR. THIS IS A FUCKING FORM AND THAT'S IT.
-    public function formGenerator($a)
+    //Gets the columns from the object property and prints them out.. Hopefully in a neat-ish way` 
+    public function formGenerator($application)
     {
         echo "<form class='form jumbotron' action='#'>";
-        echo "<span> Nume: ". $a["nume"]. " Prenume: ". $a["prenume"]. "</span><br>";
-        echo "<span> question1: ". $a["question1"]. "</span><br>";
+        forEach($application as $fieldName => $fieldValue){
+            $prettyName = "";
+            forEach($this->columns as $column){
+                if($fieldName == $column['name'])
+                    $prettyName = $column['prettyName'];
+            }
+            echo "<span><strong>".$prettyName."</strong> : " .$fieldValue. "</span><br>";
+        }
         echo "<label for='nota-formular'>
 				Nota formular:
 			  </label> 
 			  <input id='nota-formular' name='nota-formular' type='text' class='form-control'></input><br>";
-        echo "<span> question2: ". $a["question2"]. "<br>";
         echo "<label for='nota-recomandare'> 
 				Nota recomandare: 
 			  </label> 
 			  <input id='nota-recomandare' name='nota-recomandare' type='text' class='form-control'></input><br>";
-        echo "<span> question3: ". $a["question3"]. "</span><br>";
         echo "<label for='nota-voluntariat'
 				Nota Voluntariat: 
 			  <label>
 			  <input id='nota-voluntariat' name='nota-voluntariat' type='text' class='form-control'></input><br>";
         echo "<button class='btn btn-success' type='submit'>Submit</button>";
         echo "</form>";
+        die();
     }
 
     public function updateProgress($a)
