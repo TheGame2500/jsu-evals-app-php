@@ -63,6 +63,7 @@ class Evaluation
         }
     }
 
+    //THIS IS NOT A FORM GENERATOR. THIS IS A FUCKING FORM AND THAT'S IT.
     public function formGenerator($a)
     {
         echo "<form class='form jumbotron' action='#'>";
