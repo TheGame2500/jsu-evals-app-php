@@ -93,11 +93,36 @@ class evals{
             }
             unset($allPosts[$key1]);
             if(count($row) !== 1)
-                d($row);
+                $this -> insertRow($row);
         }
-        die();
     }
 
+    private function insertRow($row){
+        $sqlColumns = "INSERT INTO evals(";
+        $sqlValues = "VALUES(";
+        forEach($row as $fieldNum){
+            $sqlColumns.= '`'.$this->getColumnName($fieldNum[2]).'`, ';
+            $unserializedVal = unserialize($fieldNum[3]);
+            if(getType($unserializedVal) == "array")
+                forEach($unserializedVal as $randomFuckingValue){
+                    $sqlValues.= "'".$this->db_connection->real_escape_string($randomFuckingValue['file_url'])."', ";
+                }
+            else
+                $sqlValues.= "'".$fieldNum[3]."', ";
+        }
+        $sqlColumns.= "progress)";
+        $sqlValues.= "0);";
+        $sql = $sqlColumns." ".$sqlValues;
+
+        $this->db_connection->query($sql);
+    }
+
+    private function getColumnName($field){
+        forEach($this->columnsArray as $column){
+            if("_field_".$column['id'] == $field)
+                return $column['name'];
+        }
+    }
     private function getAllPosts(){
         $formID = $this -> form_id; 
         $columns = "";
