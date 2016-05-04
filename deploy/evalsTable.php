@@ -156,4 +156,9 @@ class EvalsAPI{
         return $this -> db_connection -> query($sql);
     }
 }
+
+//DEPLOYMENT
+//uncomment the next 2 lines and access the file by link to create and populate the evals table
+//$deployment = new EvalsAPI;
+//$deployment -> generateEvalTable();
 ?>

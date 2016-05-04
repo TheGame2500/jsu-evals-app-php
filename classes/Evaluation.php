@@ -40,7 +40,17 @@ class Evaluation
 		$user_id = $_SESSION['user_id'];
         if (!$this->db_connection->connect_errno)
         {
-            $sql = "SELECT *
+            $sql = "SELECT id, 
+                           Optiunea_1, Optiunea_2, Optiunea_3,
+                           `1.Ce_te-ar_determina`,
+                           `2._De_ce_ai_optat_pe`,
+                           `3.Ce_te_recomandă_s`,
+                           `4.Având_în_vedere_`,
+                           `5.Menţionează_2-3_`,
+                           `6.De_unde_ai_aflat_d`,
+                           `Scrisoare_de_recoman`,
+                           `Adeverința`,
+                           `Acord_parental`
 					FROM evals ev
 					WHERE
 					progress != 2
@@ -73,30 +83,36 @@ class Evaluation
     //Gets the columns from the object property and prints them out.. Hopefully in a neat-ish way` 
     public function formGenerator($application)
     {
-        echo "<form class='form jumbotron' action='#'>";
+        echo "<form class='form jumbotron form-inline' action='#'>";
         forEach($application as $fieldName => $fieldValue){
             $prettyName = "";
             forEach($this->columns as $column){
-                if($fieldName == $column['name'])
+                if( $fieldName == $column['name'] && $fieldName !== "id" ){
                     $prettyName = $column['prettyName'];
+                    echo "<span><strong>".$prettyName."</strong> : <br> " .$fieldValue. "</span><br>";
+                }
             }
-            echo "<span><strong>".$prettyName."</strong> : " .$fieldValue. "</span><br>";
         }
-        echo "<label for='nota-formular'>
-				Nota formular:
-			  </label> 
-			  <input id='nota-formular' name='nota-formular' type='text' class='form-control'></input><br>";
-        echo "<label for='nota-recomandare'> 
-				Nota recomandare: 
-			  </label> 
-			  <input id='nota-recomandare' name='nota-recomandare' type='text' class='form-control'></input><br>";
-        echo "<label for='nota-voluntariat'
-				Nota Voluntariat: 
-			  <label>
-			  <input id='nota-voluntariat' name='nota-voluntariat' type='text' class='form-control'></input><br>";
-        echo "<button class='btn btn-success' type='submit'>Submit</button>";
+        echo "  <div class='form-group'>
+                    <label for='nota-formular'>
+                            Nota formular:
+                    </label> 
+                    <input id='nota-formular' name='nota-formular' type='text' class='form-control'>
+                </div>";
+        echo "  <div class='form-group'>
+                    <label for='nota-recomandare'> 
+                        Nota recomandare: 
+                    </label> 
+                    <input id='nota-recomandare' name='nota-recomandare' type='text' class='form-control'>
+                </div>";
+        echo "  <div class='form-group'>
+                    <label for='nota-voluntariat'>
+	    	        Nota Voluntariat: 
+    	            </label>			  
+                    <input id='nota-voluntariat' name='nota-voluntariat' type='text' class='form-control'>
+                </div>";
+        echo "<div class='form-group row col-xs-12'><button class='btn btn-success' type='submit'>Submit</button></div>";
         echo "</form>";
-        die();
     }
 
     public function updateProgress($a)
