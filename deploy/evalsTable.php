@@ -159,6 +159,6 @@ class EvalsAPI{
 
 //DEPLOYMENT
 //uncomment the next 2 lines and access the file by link to create and populate the evals table
-//$deployment = new EvalsAPI;
+//$deployment = new EvalsAPI(6);
 //$deployment -> generateEvalTable();
 ?>
