@@ -102,6 +102,7 @@ class EvalsAPI{
 
     private function populateTable(){
         $allPosts = $this -> getAllPosts() -> fetch_all();
+        set_time_limit (500); // this is gonna take a while so make sure we don't have any issues with it..
         forEach($allPosts as $key1 => $post){
             $row = [$post];
             forEach($allPosts as $key2 => $otherPost){
@@ -159,6 +160,6 @@ class EvalsAPI{
 
 //DEPLOYMENT
 //uncomment the next 2 lines and access the file by link to create and populate the evals table
-//$deployment = new EvalsAPI(6);
-//$deployment -> generateEvalTable();
+$deployment = new EvalsAPI(6);
+$deployment -> generateEvalTable();
 ?>
