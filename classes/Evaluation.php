@@ -4,7 +4,6 @@
  * Class Evaluation
  * handles the user's evaluation input
  */
-require('../deploy/kint-master/Kint.class.php');
 class Evaluation
 {
     /**
